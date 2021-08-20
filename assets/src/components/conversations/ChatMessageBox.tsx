@@ -47,6 +47,8 @@ const ChatMessageAttachment = ({
           textDecoration: 'underline',
         }}
       >
+        {filename.includes('.png') && <img src={fileUrl} alt="display image" />}
+        <br></br>
         {filename}
       </a>
     </Box>
