@@ -40,17 +40,17 @@ const ChatMessageAttachment = ({
   return (
     <Box key={id}>
       <PaperClipOutlined />{' '}
+      {filename.includes('.png') && <img src={fileUrl} alt="display image" />}
+      <br></br>
       <a
         href={fileUrl}
         style={{
           color,
           textDecoration: 'underline',
         }}
-      >
-        {filename.includes('.png') && <img src={fileUrl} alt="display image" />}
-        <br></br>
-        {filename}
-      </a>
+      >        
+      {filename}
+              </a>
     </Box>
   );
 };
