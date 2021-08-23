@@ -150,6 +150,7 @@ defmodule ChatApiWeb.Router do
     resources("/canned_responses", CannedResponseController, except: [:new, :edit])
     resources("/lambdas", LambdaController, except: [:new, :edit])
     resources("/message_templates", MessageTemplateController, except: [:new, :edit])
+    resources("/broadcasts", BroadcastController, except: [:new, :edit])
 
     post("/lambdas/:id/deploy", LambdaController, :deploy)
     post("/lambdas/:id/invoke", LambdaController, :invoke)
