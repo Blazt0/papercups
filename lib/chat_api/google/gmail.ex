@@ -18,6 +18,7 @@ defmodule ChatApi.Google.Gmail do
           thread_id: params[:thread_id]
         )
 
+      # TODO: use post instead of post!
       %{body: result} = OAuth2.Client.post!(client, scope, body)
 
       result
