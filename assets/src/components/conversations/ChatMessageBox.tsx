@@ -6,6 +6,7 @@ import {MarkdownRenderer, Text} from '../common';
 import {Attachment, Message, MessageSource} from '../../types';
 import {PaperClipOutlined} from '../icons';
 
+
 dayjs.extend(utc);
 
 const getMessageSourceDetails = (source?: MessageSource) => {
@@ -36,24 +37,43 @@ const ChatMessageAttachment = ({
   color?: string;
 }) => {
   const {id, filename, file_url: fileUrl} = attachment;
+  const isImage = (filename: string) => {
+    return  filename.includes(".png") || filename.includes("jpeg") || filename.includes(".jpg")
+  }
 
   return (
-    <Box key={id}>
-      <PaperClipOutlined />{' '}
-      {filename.includes('.png') && <img src={fileUrl} alt="display image" />}
-      <br></br>
-      <a
-        href={fileUrl}
-        style={{
-          color,
-          textDecoration: 'underline',
-        }}
-      >        
-      {filename}
-              </a>
-    </Box>
+      <Flex sx={{flexDirection: 'column', height: '100%'}} >
+      {/* // <Box display="flex" p={1} bgcolor="background.paper" {...this} >
+        <PaperClipOutlined />{' '} */}
+        {/* {filename.includes(".png") || filename.includes("jpeg") || filename.includes(".raw") || filename.includes(".tiff") || filename.includes(".eps")
+        ? <img src={fileUrl} alt="display image" /> : null} */}
+        {(filename.includes(".jpeg") || filename.includes(".png")) && <img src={fileUrl} alt="display image" />}
+        <br></br>
+        <a
+          href={fileUrl}
+          style={{
+            color,
+            textDecoration: 'underline',
+          }}
+          >   
+          {filename}
+        </a>
+      </Flex>
   );
 };
+
+{/* <Box key={id}> */}
+
+
+{/* <a
+href={fileUrl}
+style={{
+  color,
+  textDecoration: 'underline',
+}}
+>   
+{filename}
+</a> */}
 
 type Props = {
   className?: string;
@@ -89,6 +109,7 @@ const ChatMessageBox = ({
   });
 
   return (
+    <Box>
     <Box sx={parsedSx}>
       {subject && (
         <Box pb={1} mb={2} sx={{borderBottom: '1px solid rgba(0,0,0,.06)'}}>
@@ -100,19 +121,7 @@ const ChatMessageBox = ({
 
       <MarkdownRenderer className={className} source={body} />
 
-      {attachments && attachments.length > 0 && (
-        <Box mt={2} className={className}>
-          {attachments.map((attachment) => {
-            return (
-              <ChatMessageAttachment
-                key={attachment.id}
-                attachment={attachment}
-                color={attachmentTextColor}
-              />
-            );
-          })}
-        </Box>
-      )}
+
 
       {formattedSource && (
         <Flex
@@ -146,7 +155,23 @@ const ChatMessageBox = ({
           </Flex>
         </Flex>
       )}
+            
     </Box>
+    {attachments && attachments.length > 0 && (
+      <Box mt={2} className={className}>
+        {attachments.map((attachment) => {
+          return (
+            <ChatMessageAttachment
+              key={attachment.id}
+              attachment={attachment}
+              color={attachmentTextColor}
+            />
+          );
+        })}
+      </Box>
+    )}
+    </Box>
+  
   );
 };
 
