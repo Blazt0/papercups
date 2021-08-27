@@ -1978,7 +1978,7 @@ export const createNewBroadcast = async (
   }
 
   return request
-    .post(`/api/broadcast`)
+    .post(`/api/broadcasts`)
     .send({broadcast: params})
     .set('Authorization', token)
     .then((res) => res.body.data);
@@ -2042,7 +2042,7 @@ export const sendBroadcastEmail = async (
     .post(`/api/broadcasts/${id}/send`)
     .send({})
     .set('Authorization', token)
-    .then((res) => res.body);
+    .then((res) => res.body.data);
 };
 
 export const fetchMessageTemplates = async (token = getAccessToken()) => {
