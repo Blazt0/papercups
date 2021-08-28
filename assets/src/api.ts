@@ -1064,6 +1064,26 @@ export const sendGmailNotification = async (
     .then((res) => res.body.data);
 };
 
+export const fetchGoogleSheet = async (
+  query: {
+    id?: string;
+    url?: string;
+    range?: string;
+    sheet?: string;
+  },
+  token = getAccessToken()
+) => {
+  if (!token) {
+    throw new Error('Invalid token!');
+  }
+
+  return request
+    .get(`/api/google_sheets`)
+    .query(query)
+    .set('Authorization', token)
+    .then((res) => res.body.data);
+};
+
 export const fetchEventSubscriptions = async (token = getAccessToken()) => {
   if (!token) {
     throw new Error('Invalid token!');
