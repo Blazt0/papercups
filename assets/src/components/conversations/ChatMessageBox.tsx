@@ -6,7 +6,6 @@ import {colors, MarkdownRenderer, Text} from '../common';
 import {Attachment, Message, MessageSource} from '../../types';
 import {PaperClipOutlined} from '../icons';
 
-
 dayjs.extend(utc);
 
 const getMessageSourceDetails = (source?: MessageSource) => {
@@ -37,30 +36,44 @@ const ChatMessageAttachment = ({
   color?: string;
 }) => {
   const {id, filename, file_url: fileUrl} = attachment;
-  const isImage = (filename: string) => {
-    return  filename.includes(".png") || filename.includes("jpeg") || filename.includes(".jpg")
-  }
+  const isImage =
+    filename.includes('.png') ||
+    filename.includes('jpeg') ||
+    filename.includes('.jpg');
 
   return (
-      <Flex sx={{flexDirection: 'column', height: '100%', }}>
-        {(filename.includes(".jpeg") || filename.includes(".png")) && <img src={fileUrl} alt="display image" style={{borderRadius:"5%"}}/>}
-        <a
-          href={fileUrl}
-          style={{
-            textDecoration: 'underline',
-            color:"white" ,
-            backgroundColor: colors.primary,
-            border: "none",
-          }}
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        backgroundColor: '#F5F5F5',
+        borderRadius: 3,
+      }}
+    >
+      {isImage && (
+        <img
+          src={fileUrl}
+          alt="display image"
+          style={{height: '100%', borderRadius: 3}}
+        />
+      )}
+      <Box>
+        <Flex pb={2} pt={2} pr={3}>
+          <a
+            href={fileUrl}
+            style={{
+              textDecoration: 'underline',
+              color: colors.primary,
+              backgroundColor: '#F5F5F5',
+              border: 'none',
+            }}
           >
-          {filename}
-        </a>
-        {/* {message.body===null && console.log("abc")} */}
-      </Flex>
+            <PaperClipOutlined style={{color: '#7E7E7E'}} /> {filename}
+          </a>
+        </Flex>
+      </Box>
+    </Flex>
   );
 };
-
-{/* <Box key={id}> */}
 
 type Props = {
   className?: string;
@@ -97,65 +110,72 @@ const ChatMessageBox = ({
 
   return (
     <Box>
-      <Box sx={parsedSx}>
-        {subject && (
-          <Box pb={1} mb={2} sx={{borderBottom: '1px solid rgba(0,0,0,.06)'}}>
-            <Text className={className} type="secondary" style={{fontSize: 12}}>
-              {subject}
-            </Text>
-          </Box>
-        )}
-      <MarkdownRenderer className={className} source={body} />
+      {body && (
+        <Box sx={parsedSx}>
+          {subject && (
+            <Box pb={1} mb={2} sx={{borderBottom: '1px solid rgba(0,0,0,.06)'}}>
+              <Text
+                className={className}
+                type="secondary"
+                style={{fontSize: 12}}
+              >
+                {subject}
+              </Text>
+            </Box>
+          )}
+          <MarkdownRenderer className={className} source={body} />
 
-      
+          {formattedSource && (
+            <Flex
+              pt={1}
+              mt={2}
+              sx={{
+                borderTop: '1px solid rgba(0,0,0,.06)',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                className={className}
+                type="secondary"
+                style={{fontSize: 12, marginRight: 32}}
+              >
+                {createdAt}
+              </Text>
 
-      {formattedSource && (
-        <Flex
-          pt={1}
-          mt={2}
-          sx={{
-            borderTop: '1px solid rgba(0,0,0,.06)',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Text
-            className={className}
-            type="secondary"
-            style={{fontSize: 12, marginRight: 32}}
-          >
-            {createdAt}
-          </Text>
-
-          <Flex sx={{alignItems: 'center'}}>
-            {sourceIcon && (
-              <img
-                src={sourceIcon}
-                alt={source}
-                style={{height: 12, marginRight: 4}}
+              <Flex sx={{alignItems: 'center'}}>
+                {sourceIcon && (
+                  <img
+                    src={sourceIcon}
+                    alt={source}
+                    style={{height: 12, marginRight: 4}}
+                  />
+                )}
+                <Text
+                  className={className}
+                  type="secondary"
+                  style={{fontSize: 12}}
+                >
+                  Sent via {formattedSource}
+                </Text>
+              </Flex>
+            </Flex>
+          )}
+        </Box>
+      )}
+      {attachments && attachments.length > 0 && (
+        <Box mt={2} className={className}>
+          {attachments.map((attachment) => {
+            return (
+              <ChatMessageAttachment
+                key={attachment.id}
+                attachment={attachment}
+                color={attachmentTextColor}
               />
-            )}
-            <Text className={className} type="secondary" style={{fontSize: 12}}>
-              Sent via {formattedSource}
-            </Text>
-          </Flex>
-        </Flex>
-      )}            
-    </Box>
-          {/* {here}} */}
-          {attachments && attachments.length > 0 && (
-      <Box mt={2} className={className}>
-        {attachments.map((attachment) => {
-          return (
-            <ChatMessageAttachment
-              key={attachment.id}
-              attachment={attachment}
-              color={attachmentTextColor}
-            />
-          );
-        })}
-      </Box>
-    )}
+            );
+          })}
+        </Box>
+      )}
     </Box>
   );
 };

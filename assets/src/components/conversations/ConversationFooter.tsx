@@ -57,8 +57,6 @@ const AttachFileButton = ({
       <Button icon={<PaperClipOutlined />} size="small">
         Attach a file
       </Button>
-      {/* {fileList[0] != undefined && {console.log(fileList[1])} */}
-      {/* {fileList[0] != undefined && <img src={fileList[1].response.data.file_url} alt="display image" />} */}
     </Upload>
   );
 };
